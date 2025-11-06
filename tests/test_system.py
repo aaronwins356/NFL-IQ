@@ -197,10 +197,13 @@ def test_inference_pipeline():
     
     # Note: This will use baseline predictions since models aren't trained
     # In real usage, models would be loaded
+    # The pipeline gracefully falls back to baseline predictions
     predictions = pipeline.run_game_predictions(games_df, features_df)
     
     assert len(predictions) == 1
     assert 'home_win_prob' in predictions.columns
+    # Baseline prediction should be 0.50 (50-50 game)
+    assert 0.4 <= predictions['home_win_prob'].iloc[0] <= 0.6
 
 
 def test_file_operations():

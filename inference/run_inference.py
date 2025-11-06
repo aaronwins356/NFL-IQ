@@ -81,29 +81,40 @@ class InferencePipeline:
                 continue
             
             # Predict win probability
-            if self.winprob_model:
-                X = game_features.drop(['game_id', 'season', 'week', 'home_team_id', 'away_team_id'], 
-                                      axis=1, errors='ignore')
-                
-                home_win_prob = self.winprob_model.predict_proba(X)[0]
-                
-                # Apply calibration
-                if self.calibrator:
-                    home_win_prob = self.calibrator.transform([home_win_prob])[0]
+            if self.winprob_model and self.models_loaded:
+                try:
+                    X = game_features.drop(['game_id', 'season', 'week', 'home_team_id', 'away_team_id'], 
+                                          axis=1, errors='ignore')
+                    
+                    home_win_prob = self.winprob_model.predict_proba(X)[0]
+                    
+                    # Apply calibration
+                    if self.calibrator:
+                        home_win_prob = self.calibrator.transform([home_win_prob])[0]
+                except Exception as e:
+                    logger.warning(f"Error in win prob prediction: {e}, using baseline")
+                    home_win_prob = 0.50
             else:
                 # Baseline: 50-50
                 home_win_prob = 0.50
             
             # Predict scores and spread/total
-            if self.score_model:
-                X = game_features.drop(['game_id', 'season', 'week', 'home_team_id', 'away_team_id'],
-                                      axis=1, errors='ignore')
-                
-                spread_total = self.score_model.predict_spread_total(X)
-                home_score = spread_total['home_score_mean'].iloc[0]
-                away_score = spread_total['away_score_mean'].iloc[0]
-                spread = spread_total['spread'].iloc[0]
-                total = spread_total['total'].iloc[0]
+            if self.score_model and self.models_loaded:
+                try:
+                    X = game_features.drop(['game_id', 'season', 'week', 'home_team_id', 'away_team_id'],
+                                          axis=1, errors='ignore')
+                    
+                    spread_total = self.score_model.predict_spread_total(X)
+                    home_score = spread_total['home_score_mean'].iloc[0]
+                    away_score = spread_total['away_score_mean'].iloc[0]
+                    spread = spread_total['spread'].iloc[0]
+                    total = spread_total['total'].iloc[0]
+                except Exception as e:
+                    logger.warning(f"Error in score prediction: {e}, using baseline")
+                    home_score = 24.0
+                    away_score = 21.0
+                    spread = 3.0
+                    total = 45.0
             else:
                 # Baseline scores
                 home_score = 24.0
