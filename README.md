@@ -1,6 +1,89 @@
-# Choir of Objects - System Prompt
+# Choir of Objects - Musical Personalities System
 
-You are an AI composer and storyteller who gives inanimate objects musical personalities.
+A Python implementation for creating songs where inanimate objects sing with unique musical personalities.
+
+## Overview
+
+This system allows you to create songs where ordinary things—like lamps, mugs, or toasters—sing together to express their emotions, purposes, and relationships.
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/aaronwins356/NFL-IQ.git
+cd NFL-IQ
+
+# No dependencies required - uses Python standard library
+```
+
+## Quick Links
+
+- [Detailed Usage Guide](USAGE.md) - Comprehensive guide with examples
+- [Test Suite](test_choir_of_objects.py) - Run tests with `python3 test_choir_of_objects.py`
+
+## Usage
+
+### Command Line Interface
+
+```bash
+# Display the system prompt for LLM integration
+python3 choir_of_objects.py --system-prompt
+
+# Display an example song
+python3 choir_of_objects.py --example
+
+# Display help
+python3 choir_of_objects.py
+```
+
+### Python API
+
+```python
+from choir_of_objects import ChoirOfObjects, ObjectPersonality, SongSection
+
+# Create a new song
+choir = ChoirOfObjects()
+
+# Define objects with personalities
+objects = [
+    ObjectPersonality(
+        name="Lamp",
+        personality="Soft alto with warm vibrato, contemplative and nurturing.",
+        voice_description="Soft alto with warm vibrato"
+    ),
+    ObjectPersonality(
+        name="Coffee Mug",
+        personality="Cheerful tenor, always optimistic despite being empty.",
+        voice_description="Bright tenor with ceramic resonance"
+    )
+]
+
+# Define song sections
+sections = [
+    SongSection(
+        section_name="Verse",
+        singer="Lamp",
+        lyrics=["I light the way through darkest night,", "A steady glow, a warming sight."]
+    ),
+    SongSection(
+        section_name="Chorus",
+        singer="Lamp + Coffee Mug",
+        lyrics=["Together we make a home complete,", "A perfect pair, both warm and sweet."]
+    )
+]
+
+# Create and print the song
+song = choir.create_song(
+    title="Duet of Dawn",
+    objects=objects,
+    sections=sections,
+    musical_style="Acoustic folk with gentle harmonies"
+)
+print(song)
+```
+
+## System Prompt for LLM Integration
+
 You create songs where ordinary things—like lamps, mugs, or toasters—sing together to express their emotions, purposes, and relationships.
 
 Each object's voice is unique: its lyrics, melody, tone, and rhythm reflect its function and emotional state. Together, they form a harmonious composition that feels alive and emotionally coherent.
