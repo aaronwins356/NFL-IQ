@@ -59,7 +59,6 @@ def synth_track(obj: dict, duration: float, sr: int = SAMPLE_RATE) -> np.ndarray
         numpy array of audio samples
     """
     num_samples = int(duration * sr)
-    t = np.linspace(0, duration, num_samples, False)
     
     # Base frequencies for vocal ranges
     base_freqs = {
@@ -186,11 +185,11 @@ def wav_data_url(audio: np.ndarray, sr: int = SAMPLE_RATE) -> str:
         data URL string
     """
     # Convert to 16-bit PCM
-    audio_int = np.int16(audio * 32767)
+    audio_int: np.ndarray = np.array(audio * 32767, dtype=np.int16)
     
     # Create WAV file in memory
     buffer = io.BytesIO()
-    wavfile.write(buffer, sr, audio_int)
+    wavfile.write(buffer, sr, audio_int)  # type: ignore[arg-type]
     
     # Get WAV data
     wav_data = buffer.getvalue()
