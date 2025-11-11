@@ -1,0 +1,6 @@
+# No external dependencies required for basic functionality
+# This project uses only Python standard library
+
+# For future enhancements:
+# openai>=1.0.0  # For LLM integration
+# anthropic>=0.3.0  # For Claude integration
